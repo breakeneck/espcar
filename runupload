@@ -1,0 +1,2 @@
+for f in *.py; do amp put $f; done
+esp-connect
