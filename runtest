@@ -1,0 +1,6 @@
+# server is on USB0 // client on USB1
+# and connect to client
+
+amp put tcpServer.py main.py
+amp2 put tcpClient.py main.py
+esp-connect2

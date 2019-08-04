@@ -2,8 +2,8 @@ import network
 import socket
 import time
 
-SSID="dfrobotYanfa"
-PASSWORD="hidfrobot"
+SSID="Vrindavan"
+PASSWORD="harekrishna"
 port=10000
 wlan=None
 listenSocket=None

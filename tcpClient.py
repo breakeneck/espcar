@@ -2,10 +2,10 @@ import network
 import socket
 import time
 
-SSID="yourSSID"
-PASSWORD="yourPASSWD"
-host="192.168.3.147"
-port=100
+SSID="Vrindavan"
+PASSWORD="harekrishna"
+host="192.168.2.194"
+port=10000
 wlan=None
 s=None
 

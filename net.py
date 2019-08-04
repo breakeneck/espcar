@@ -2,13 +2,13 @@ import network
 import socket
 import time
 
-remote_ssid = "Vrindavan"
-remote_password = "harekrishna"
-remote_host = '192.168.2.222'
+# ssid = "Vrindavan"
+# password = "harekrishna"
+# host = '192.168.2.222'
 
-local_ssid = 'WifiCar'
-local_password = 'harekrishna'
-local_host = '192.168.84.1'
+ssid = 'WifiCar'
+password = 'harekrishna'
+host = '192.168.84.1'
 
 port = 10000
 

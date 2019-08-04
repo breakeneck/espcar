@@ -61,8 +61,8 @@ def accept_conections():
 
 # Catch exceptions,stop program if interrupted accidentally in the 'try'
 try:
-    wlan = net.create_wifi_ap(net.local_ssid, net.local_password, net.local_host)
-    listenSocket = net.accept_conections(net.local_host, net.port)
+    wlan = net.create_wifi_ap(net.ssid, net.password, net.host)
+    listenSocket = net.accept_conections(net.host, net.port)
 
     while True:
         client, addr = listenSocket.accept()

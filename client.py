@@ -5,8 +5,8 @@ import net
 button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
 
 try:
-    wlan = net.connect_wifi(net.local_ssid, net.local_password, net.local_host)
-    writeSocket = net.connect_host(net.local_host, net.port)
+    wlan = net.connect_wifi(net.ssid, net.password, net.host)
+    writeSocket = net.connect_host(net.host, net.port)
 
     while True:
         if net.read_click(button):
