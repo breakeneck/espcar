@@ -5,8 +5,11 @@ ZERO_TOP = 500
 ESP_MAX_VALUE = 1024
 BACKWARD_SPEED_K = 1
 
-
-Axis = namedtuple('AxisRaw', ('action', 'speed'))
+class Axis:
+    action = 0
+    speed = 0
+    value = 0
+# Axis = namedtuple('AxisRaw', ('action', 'speed'))
 AxisRaw = namedtuple('AxisRaw', ('action', 'speed', 'value'))
 
 
