@@ -1,3 +1,0 @@
-#for f in *.py; do amp2 put $f; done
-amp2 put client.py main.py
-esp-connect2

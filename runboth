@@ -1,8 +1,0 @@
-# server is on USB0 // client on USB1
-# and connect to client
-
-amp put server.py main.py
-amp put net.py
-amp2 put client.py main.py
-amp2 put net.py
-esp-connect2

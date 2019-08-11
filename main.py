@@ -1,7 +1,6 @@
 import machine
 import time
 
-import control
 from control import Control
 from car import Car
 
@@ -17,7 +16,7 @@ while True:
     value_y = adc.read()
 
     print('x = ' + value_x + 'y = ' + value_y)
-    # control.read_action(value_y)
+    control.read_action(value_y)
     #
     # if (prev_action == control)
     # print(control.to_string())

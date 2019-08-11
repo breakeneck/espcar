@@ -1,39 +1,53 @@
-FORWARD_MAX = 700
-BACKWARD_MIN = 900
+from ucollections import namedtuple
+
+ZERO_BOTTOM = 400
+ZERO_TOP = 500
 ESP_MAX_VALUE = 1024
 BACKWARD_SPEED_K = 1
+
+Axis = namedtuple('Axis', ('action', 'speed', 'value'))
 
 
 class Control:
     ACTION_STOP = 0
-    ACTION_FORWARD = 1
-    ACTION_BACKWARD = 2
-    ACTION_LEFT = 3
-    ACTION_RIGHT = 4
-    
-    action = 0
-    speed = 0
-    value_y = ...
-    value_x = ...
-    actionsList = ['stop', 'forward', 'backward', 'left', 'right']
+    ACTION_BACKWARD = 1
+    ACTION_FORWARD = 2
+    ACTION_LEFT = 1
+    ACTION_RIGHT = 2
 
-    def read_action(self, value_y):
-        self.value_y = value_y
+    x_axis = Axis(0, 0, 0)
+    y_axis = Axis(0, 0, 0)
 
-        if self.value_y < FORWARD_MAX:
-            self.action = self.ACTION_FORWARD
-            self.speed = ((FORWARD_MAX - self.value_y) / FORWARD_MAX) * ESP_MAX_VALUE
-        elif value_y > BACKWARD_MIN:
-            self.action = self.ACTION_BACKWARD
-            self.speed = ((self.value_y - BACKWARD_MIN) / (ESP_MAX_VALUE - BACKWARD_MIN)) * (ESP_MAX_VALUE * BACKWARD_SPEED_K)
+    x_actions = ('stop', 'left', 'right')
+    y_actions = ('stop', 'backward', 'forward')
+
+
+    def decrypt(self, value_x, value_y):
+        self.x_axis = self.decrypt_value(value_x)
+        self.y_axis = self.decrypt_value(value_y)
+
+
+    def decrypt_value(self, value):
+        if value < ZERO_BOTTOM:
+            action = 1
+            speed = ((ZERO_BOTTOM - value) / ZERO_BOTTOM) * ESP_MAX_VALUE
+        elif value > ZERO_TOP:
+            action = 2
+            speed = ((value - ZERO_TOP) / (ESP_MAX_VALUE - ZERO_TOP)) * (ESP_MAX_VALUE)
         else:
-            self.action = self.ACTION_STOP
-            self.speed = 0
+            action = 0
+            speed = 0
 
-        self.speed = round(self.speed)
+        return Axis(action, int(speed), value)
 
-    def action_str(self):
-        return self.actionsList[self.action]
 
-    def to_string(self):
-        return self.action_str() + ' ' + str(self.speed) + 'km/h (' + str(self.value_y) + ')'
+    def y_to_string(self):
+        return self.to_string(self.y_actions, self.y_axis)
+
+
+    def x_to_string(self):
+        return self.to_string(self.x_actions, self.x_axis)
+
+
+    def to_string(self, actions, axis):
+        return actions[axis.action] + ' ' + str(axis.speed) + 'km/h (' + str(axis.value) + ')'
