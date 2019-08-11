@@ -58,3 +58,7 @@ class Control:
     def output(self):
         return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed)])
         # return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed]))
+
+
+    def input(self, byte_str):
+        self.x_actions.action, self.x_actions.speed, self.y_actions.action, self.y_actions.speed = str(byte_str).split(",")

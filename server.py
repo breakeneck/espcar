@@ -1,11 +1,12 @@
 import net
-
+from control import Control
 
 wlan = net.connect_wifi(net.host, net.gateway) # static IP
 print('connected')
 listenSocket = net.listen()
 print('Listening socket')
 
+control = Control()
 
 while True:
     print('Accepting connections...')
@@ -14,7 +15,9 @@ while True:
 
     while True:
         response = net.receive_command(connection)
-        print(response)
+        control.input(response)
+        print(control.y_to_string(), control.x_to_string())
+        # print(response)
 
         if not response:
             connection.close()

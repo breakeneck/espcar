@@ -18,7 +18,6 @@ while True:
 
     while True:
         joy.read()
-        print(joy.control.output())
         response = net.send_command(connection, joy.control.output())
         if not response:
             print('No response or socket error')
