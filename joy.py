@@ -28,8 +28,8 @@ def read():
 
 
 
-while True:
-    read()
-    print(control.y_to_string(), control.x_to_string())
-
-    sleep(0.1)
+# while True:
+#     read()
+#     print(control.y_to_string(), control.x_to_string())
+#
+#     sleep(0.1)

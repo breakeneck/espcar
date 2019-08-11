@@ -1,5 +1,6 @@
 import machine
 import net
+import joy
 
 button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
 
@@ -16,7 +17,9 @@ while True:
     print('Socket connected, awaiting commands')
 
     while True:
-        response = net.send_command(connection, 'Button Click ' + str(counter))
+        joy.read()
+        print(joy.control.output())
+        response = net.send_command(connection, joy.control.output())
         if not response:
             print('No response or socket error')
             break

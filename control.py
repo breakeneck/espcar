@@ -56,4 +56,5 @@ class Control:
 
 
     def output(self):
-        return (self.x_axis.action, self.x_axis.speed, self.y_axis.action, self.y_axis.speed)
+        return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed)])
+        # return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed]))
