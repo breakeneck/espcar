@@ -24,7 +24,7 @@ def read():
     value_y = dy.read()
     # sw_value = not sw.value()
 
-    control.decrypt(value_x, value_y)
+    control.read_raw(value_x, value_y)
 
 
 

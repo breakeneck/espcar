@@ -5,7 +5,9 @@ ZERO_TOP = 500
 ESP_MAX_VALUE = 1024
 BACKWARD_SPEED_K = 1
 
-Axis = namedtuple('Axis', ('action', 'speed', 'value'))
+
+Axis = namedtuple('AxisRaw', ('action', 'speed'))
+AxisRaw = namedtuple('AxisRaw', ('action', 'speed', 'value'))
 
 
 class Control:
@@ -15,19 +17,19 @@ class Control:
     ACTION_LEFT = 1
     ACTION_RIGHT = 2
 
-    x_axis = Axis(0, 0, 0)
-    y_axis = Axis(0, 0, 0)
+    x_axis = AxisRaw(0, 0, 0)
+    y_axis = AxisRaw(0, 0, 0)
 
     x_actions = ('stop', 'left', 'right')
     y_actions = ('stop', 'backward', 'forward')
 
 
-    def decrypt(self, value_x, value_y):
-        self.x_axis = self.decrypt_value(value_x)
-        self.y_axis = self.decrypt_value(value_y)
+    def read_raw(self, value_x, value_y):
+        self.x_axis = self._decrypt_value(value_x)
+        self.y_axis = self._decrypt_value(value_y)
 
 
-    def decrypt_value(self, value):
+    def _decrypt_value(self, value):
         if value < ZERO_BOTTOM:
             action = 1
             speed = ((ZERO_BOTTOM - value) / ZERO_BOTTOM) * ESP_MAX_VALUE
@@ -38,16 +40,20 @@ class Control:
             action = 0
             speed = 0
 
-        return Axis(action, int(speed), value)
+        return AxisRaw(action, int(speed), value)
 
 
     def y_to_string(self):
-        return self.to_string(self.y_actions, self.y_axis)
+        return self._to_string(self.y_actions, self.y_axis)
 
 
     def x_to_string(self):
-        return self.to_string(self.x_actions, self.x_axis)
+        return self._to_string(self.x_actions, self.x_axis)
 
 
-    def to_string(self, actions, axis):
+    def _to_string(self, actions, axis):
         return actions[axis.action] + ' ' + str(axis.speed) + 'km/h (' + str(axis.value) + ')'
+
+
+    def output(self):
+        return (self.x_axis.action, self.x_axis.speed, self.y_axis.action, self.y_axis.speed)
