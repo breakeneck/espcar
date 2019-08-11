@@ -2,6 +2,8 @@ import network
 import socket
 import time
 
+BYTES = 16 # bytes to read for one time
+
 ssid = "Vrindavan"
 password = "harekrishna"
 host = '192.168.2.222'
@@ -141,11 +143,11 @@ def send_command_per_socket(request):
 def receive_command(connection):
     try:
         # connection,addr = listenSocket.accept()
-        data = connection.recv(1024)                #Receive 1024 byte of data from the socket
+        data = connection.recv(BYTES)                #Receive 1024 byte of data from the socket
         # print('received ' + data + ' from ' + addr)
         connection.send('OK')                 #send data
 
-        if (data == 'END'):
+        if (str(data) == 'END'):
             print('End of program received')
             return False
     except Exception as e:
@@ -175,7 +177,7 @@ def connect_socket():
 def send_command(sendSocket, command):
     print('Sended ' + command)
     sendSocket.send(command)
-    response = sendSocket.recv(1024)
+    response = sendSocket.recv(BYTES)
     # sendSocket.close()
 
     return response

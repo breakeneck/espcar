@@ -8,7 +8,7 @@ wlan = net.connect_wifi()
 counter = 0
 
 while True:
-    print('Awaiting connection to host')
+    print('Awaiting connection to socket')
     connection = net.connect_socket()
     if not connection:
         continue
