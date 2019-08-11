@@ -175,9 +175,15 @@ def connect_socket():
 
 
 def send_command(sendSocket, command):
-    print('Sended ' + command)
-    sendSocket.send(command)
-    response = sendSocket.recv(BYTES)
-    # sendSocket.close()
+    try:
+        print('Sended ' + command)
+        sendSocket.send(command)
+        response = sendSocket.recv(BYTES)
+        if len(response) == 0:
+            return False
+        # sendSocket.close()
+    except Exception as e:
+        print('closed because ' + type(e).__name__)
+        return False
 
     return response

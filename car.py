@@ -3,6 +3,17 @@ import time
 
 MAX_SPEED = 500
 
+"""
+PIN   1, 2, 3, 4, L, R
+GPIO  5, 4, 0, 2, 12,14
+"""
+PIN_INPUT1 = 5 # orange
+PIN_INPUT2 = 4 # yellow
+PIN_INPUT3 = 0 # green
+PIN_INPUT4 = 2 # blue
+PIN_ENABLE_A = 12 # white
+PIN_ENABLE_B = 14 # black
+
 
 class Car:
     FORWARD = 'forward'
@@ -14,20 +25,17 @@ class Car:
     last_action_str = ...
 
     def __init__(self):
-        """
-        PIN   1, 2, 3, 4, L, R
-        GPIO  5, 4, 0, 2, 12,14
-        """
-        self.p1 = machine.Pin(5, machine.Pin.OUT)
-        self.p2 = machine.Pin(4, machine.Pin.OUT)
-        self.p3 = machine.Pin(0, machine.Pin.OUT)
-        self.p4 = machine.Pin(2, machine.Pin.OUT)
+        self.p1 = machine.Pin(PIN_INPUT1, machine.Pin.OUT)
+        self.p2 = machine.Pin(PIN_INPUT2, machine.Pin.OUT)
+        self.p3 = machine.Pin(PIN_INPUT3, machine.Pin.OUT)
+        self.p4 = machine.Pin(PIN_INPUT4, machine.Pin.OUT)
 
-        self.p_left = machine.Pin(14)
+        self.p_left = machine.Pin(PIN_ENABLE_A)
+        self.p_right = machine.Pin(PIN_ENABLE_B)
+
         self.pwm_left = machine.PWM(self.p_left)
         self.pwm_left.freq(500)
 
-        self.p_right = machine.Pin(12)
         self.pwm_right = machine.PWM(self.p_right)
         self.pwm_right.freq(500)
 

@@ -56,11 +56,11 @@ try:
     s.send("hello DFRobot,I am TCP Client")  # send data
 
     while True:
-        # data = s.recv(1024)                               #Receive 1024 byte of data from the socket
-        # if(len(data) == 0):                               #if there is no data,close
-        #   print("close socket")
-        #   s.close()
-        #   break
+        data = s.recv(1024)                               #Receive 1024 byte of data from the socket
+        if(len(data) == 0):                               #if there is no data,close
+          print("close socket")
+          s.close()
+          break
         print(data)
         if (read_click(button)):
             ret = s.send('Clicked')
