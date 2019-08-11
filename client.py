@@ -1,19 +1,38 @@
 import machine
 import net
 
-
 button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
 
-try:
-    wlan = net.connect_wifi(net.ssid, net.password, net.host)
-    writeSocket = net.connect_host(net.host, net.port)
+wlan = net.connect_wifi()
+# response = net.send_command('Yohoho')
 
-    while True:
-        if net.read_click(button):
-            writeSocket.send('Button pressed')
+print('Awaiting button click')
+while True:
+    if net.read_click(button):
+        response = net.send_command('MyCommand')
+        print(response)
 
-except Exception as e:
-    print(e)
+
+# button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
+# print('Awaiting command')
+# while True:
+#     if net.read_click(button):
+#         net.send_command('MyCommand', net.host, net.port)
+
+# writeSocket = net.connect_host(net.host, net.port)
+# writeSocket.send('startup')
+
+# while True:
+#     try:
+#         data = writeSocket.recv(1024)
+#         print(data)
+#
+#         if net.read_click(button):
+#             writeSocket.send('Button pressed')
+#
+#     except Exception as e:
+#         print(e)
+
     # print("Oops!",sys.exc_info()[0],"occured.")
 
     # if (writeSocket):

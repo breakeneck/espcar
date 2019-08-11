@@ -1,5 +1,17 @@
 import net
 
+
+wlan = net.connect_wifi(net.host, net.gateway) # static IP
+print('connected')
+listenSocket = net.listen()
+print('Listening socket')
+
+while True:
+    print('Accepting connections...')
+    command = net.receive_command(listenSocket)
+    print(command)
+
+
 """
 SSID = "Vrindavan"
 PASSWORD = "harekrishna"
@@ -59,30 +71,27 @@ def accept_conections():
 
 """
 
-# Catch exceptions,stop program if interrupted accidentally in the 'try'
-try:
-    wlan = net.create_wifi_ap(net.ssid, net.password, net.host)
-    listenSocket = net.accept_conections(net.host, net.port)
 
-    while True:
-        client, addr = listenSocket.accept()
-        if addr:
-            print(addr, 'connected')
-
-        while True:
-            data = client.recv(1024)  # Receive 1024 byte of data from the socket
-
-            if (len(data) == 0):
-                # client.close()
-                print('Received 0 bytes')
-                continue
-
-            print(data)
-            ret = client.send('ACK')
-
-except  Exception as e:
-    print(type(e).__name__)
+# while True:
+#     client, addr = listenSocket.accept()
+#     if addr:
+#         print(addr, 'connected')
+#
+#     while True:
+#         try:
+#             data = client.recv(1024)  # Receive 1024 byte of data from the socket
+#             print(data)
+#             client.send('ACK')
+#
+#         except  Exception as e:
+#             print(type(e).__name__)
 
     # wlan.disconnect()
     # wlan.active(False)
 
+
+
+            # if (len(data) == 0):
+            #     # client.close()
+            #     print('Received 0 bytes')
+            #     continue
