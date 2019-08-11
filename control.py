@@ -61,4 +61,4 @@ class Control:
 
 
     def input(self, byte_str):
-        self.x_actions.action, self.x_actions.speed, self.y_actions.action, self.y_actions.speed = str(byte_str).split(",")
+        self.x_axis.action, self.x_axis.speed, self.y_axis.action, self.y_axis.speed = str(byte_str).split(",")
