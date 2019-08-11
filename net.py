@@ -111,7 +111,7 @@ def listen():
     return listenSocket
 
 
-def receive_command(listenSocket):
+def receive_command_per_socket(listenSocket):
     try:
         connection,addr = listenSocket.accept()
         data = connection.recv(1024)                #Receive 1024 byte of data from the socket
@@ -128,12 +128,54 @@ def receive_command(listenSocket):
     else:
         return 'NOOP'
 
-def send_command(request):
+def send_command_per_socket(request):
     sendSocket = socket.socket()                                   #create socket
     sendSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#Set the value of the given socket option
     sendSocket.connect((host, port))                                #send require for connect
     sendSocket.send(request)
     response = sendSocket.recv(1024)
     sendSocket.close()
+
+    return response
+
+def receive_command(connection):
+    try:
+        # connection,addr = listenSocket.accept()
+        data = connection.recv(1024)                #Receive 1024 byte of data from the socket
+        # print('received ' + data + ' from ' + addr)
+        connection.send('OK')                 #send data
+
+        if (data == 'END'):
+            print('End of program received')
+            return False
+    except Exception as e:
+        print('closed because ' + type(e).__name__)
+        return False
+
+    if (data):
+        return data
+    else:
+        return 'NOOP'
+
+
+def connect_socket():
+    try:
+        sendSocket = socket.socket()                                   #create socket
+        sendSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#Set the value of the given socket option
+        sendSocket.connect((host, port))                                #send require for connect
+        return sendSocket
+
+    except Exception as e:
+        if sendSocket:
+            sendSocket.close()
+        print('closed because ' + type(e).__name__)
+        return False
+
+
+def send_command(sendSocket, command):
+    print('Sended ' + command)
+    sendSocket.send(command)
+    response = sendSocket.recv(1024)
+    # sendSocket.close()
 
     return response

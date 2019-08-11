@@ -6,10 +6,24 @@ print('connected')
 listenSocket = net.listen()
 print('Listening socket')
 
+
 while True:
     print('Accepting connections...')
-    command = net.receive_command(listenSocket)
-    print(command)
+    connection, addr = listenSocket.accept()
+    print('Client connected', addr)
+
+    while True:
+        response = net.receive_command(connection)
+        print(response)
+
+        if not response:
+            connection.close()
+            break
+
+
+
+    # command = net.receive_command(listenSocket)
+    # print(command)
 
 
 """
