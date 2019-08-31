@@ -1,4 +1,4 @@
 #for f in *.py; do amp put $f; done
 #esp-connect
 
-amp2 put client.py main.py && amp2 put control.py && amp2 put joy.py && esp-connect2
+amp2 put test_client.py main.py && amp2 put control.py && amp2 put net.py && esp-connect2

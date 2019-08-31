@@ -71,18 +71,7 @@ def connect_host():
     return writeSocket
 
 
-def read_click(button):
-    first = button.value()
-    time.sleep(0.01)
-    second = button.value()
-    if first and not second:
-        print('button pressed')
-        return True
-    elif not first and second:
-        print('Button released!')
-        return False
 
-    return False
 
 # def send_request(socket, host, port):
 #     client = socket.socket()  # create socket

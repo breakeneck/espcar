@@ -2,7 +2,7 @@ import machine
 import net
 import joy
 
-button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
+# button = machine.Pin(32, machine.Pin.IN, machine.Pin.PULL_UP)
 
 wlan = net.connect_wifi()
 # response = net.send_command('Yohoho')

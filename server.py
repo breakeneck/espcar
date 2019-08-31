@@ -15,7 +15,7 @@ while True:
 
     while True:
         response = net.receive_command(connection)
-        control.input(response)
+        control.load(response)
         print(control.y_to_string(), control.x_to_string())
         # print(response)
 
