@@ -24,7 +24,8 @@ def read():
     value_y = dy.read()
     # sw_value = not sw.value()
 
-    control.read_raw(value_x, value_y)
+    control.read(value_x, value_y)
+    print(control.output())
 
 
 

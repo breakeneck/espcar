@@ -1,16 +1,48 @@
 from ucollections import namedtuple
 
-ZERO_BOTTOM = 400
-ZERO_TOP = 500
-ESP_MAX_VALUE = 1024
-BACKWARD_SPEED_K = 1
+# Axis = namedtuple('AxisRaw', ('action', 'speed'))
+# AxisRaw = namedtuple('AxisRaw', ('action', 'speed', 'value'))
+
+TYPE_ABSCISSA = 0
+TYPE_ORDINATE = 1
+
 
 class Axis:
+    type = ...
     action = 0
     speed = 0
     value = 0
-# Axis = namedtuple('AxisRaw', ('action', 'speed'))
-AxisRaw = namedtuple('AxisRaw', ('action', 'speed', 'value'))
+
+    ZERO_BOTTOM = 400
+    ZERO_TOP = 500
+    ESP_MAX_VALUE = 1024
+
+    ACTION_NONE = 0
+    ACTION_FIRST = 1
+    ACTION_SECOND = 2
+
+    def __init__(self, type):
+        self.type = type
+
+    def read(self, value):
+        if value < self.ZERO_BOTTOM:
+            self.action = self.ACTION_FIRST
+            self.speed = ((self.ZERO_BOTTOM - value) / self.ZERO_BOTTOM) * self.ESP_MAX_VALUE
+        elif value > self.ZERO_TOP:
+            self.action = self.ACTION_SECOND
+            self.speed = ((value - self.ZERO_TOP) / (self.ESP_MAX_VALUE - self.ZERO_TOP)) * self.ESP_MAX_VALUE
+        else:
+            self.action = self.ACTION_NONE
+            self.speed = 0
+
+    def action_to_str(self):
+        if self.type == TYPE_ABSCISSA:
+            return ('stop', 'left', 'right')[self.action]
+        else:
+            return ('stop', 'backward', 'forward')[self.action]
+
+    def __str__(self):
+        return self.action_to_str() + ' ' + str(self.speed) + 'km/h'
 
 
 class Control:
@@ -20,48 +52,16 @@ class Control:
     ACTION_LEFT = 1
     ACTION_RIGHT = 2
 
-    x_axis = AxisRaw(0, 0, 0)
-    y_axis = AxisRaw(0, 0, 0)
+    x = Axis(TYPE_ABSCISSA)
+    y = Axis(TYPE_ORDINATE)
 
-    x_actions = ('stop', 'left', 'right')
-    y_actions = ('stop', 'backward', 'forward')
-
-
-    def read_raw(self, value_x, value_y):
-        self.x_axis = self._decrypt_value(value_x)
-        self.y_axis = self._decrypt_value(value_y)
-
-
-    def _decrypt_value(self, value):
-        if value < ZERO_BOTTOM:
-            action = 1
-            speed = ((ZERO_BOTTOM - value) / ZERO_BOTTOM) * ESP_MAX_VALUE
-        elif value > ZERO_TOP:
-            action = 2
-            speed = ((value - ZERO_TOP) / (ESP_MAX_VALUE - ZERO_TOP)) * (ESP_MAX_VALUE)
-        else:
-            action = 0
-            speed = 0
-
-        return AxisRaw(action, int(speed), value)
-
-
-    def y_to_string(self):
-        return self._to_string(self.y_actions, self.y_axis)
-
-
-    def x_to_string(self):
-        return self._to_string(self.x_actions, self.x_axis)
-
-
-    def _to_string(self, actions, axis):
-        return actions[axis.action] + ' ' + str(axis.speed) + 'km/h (' + str(axis.value) + ')'
-
+    def read(self, value_x, value_y):
+        self.x.read(value_x)
+        self.y.read(value_y)
 
     def output(self):
-        return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed)])
-        # return ",".join([str(self.x_axis.action), str(self.x_axis.speed), str(self.y_axis.action), str(self.y_axis.speed]))
-
+        return ",".join(
+            [str(self.x.action), str(self.x.speed), str(self.y.action), str(self.y.speed)])
 
     def input(self, byte_str):
-        self.x_axis.action, self.x_axis.speed, self.y_axis.action, self.y_axis.speed = str(byte_str).split(",")
+        self.x.action, self.x.speed, self.y.action, self.y.speed = str(byte_str).split(",")
