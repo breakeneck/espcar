@@ -74,7 +74,7 @@ class Axis:
     def __init__(self, type):
         self.type = type
 
-    def read_raw(self, value):
+    def read_raw(self, value, max_speed):
         if value < self.ZERO_BOTTOM:
             self.action = self.ACTION_FIRST
             self.speed = ((self.ZERO_BOTTOM - value) / self.ZERO_BOTTOM) * self.ESP_MAX_VALUE
@@ -84,6 +84,9 @@ class Axis:
         else:
             self.action = self.ACTION_NONE
             self.speed = 0
+
+        if self.speed > max_speed:
+            self.speed = max_speed
 
         self.speed = int(self.speed)
 
@@ -106,6 +109,9 @@ class EngineParams:
 
 
 class Control:
+    X_MAX_SPEED = 500
+    Y_MAX_SPEED = 1000
+
     x = Axis(Axis.TYPE_ABSCISSA)
     y = Axis(Axis.TYPE_ORDINATE)
     is_click = False
@@ -119,8 +125,8 @@ class Control:
     def read_joy(self):
         self._joy.read()
 
-        self.x.read_raw(self._joy.raw_x)
-        self.y.read_raw(self._joy.raw_y)
+        self.x.read_raw(self._joy.raw_x, self.X_MAX_SPEED)
+        self.y.read_raw(self._joy.raw_y, self.Y_MAX_SPEED)
         self.is_click = self._joy.is_click
 
         time.sleep(0.05)
