@@ -97,12 +97,21 @@ class Axis:
         return self.action_to_str() + ' ' + str(int(self.speed)) + 'km/h'
 
 
+class CarData:
+    action = ...
+    speed = ...
+
+    def __str__(self):
+        return self.action + ' ' + str(self.speed)
+
+
 class Control:
     x = Axis(Axis.TYPE_ABSCISSA)
     y = Axis(Axis.TYPE_ORDINATE)
     is_click = False
 
     _joy = ...
+    _car_data = CarData()
 
     def setup_joy(self, pin_x, pin_y, pin_sw):
         self._joy = Joy(pin_x, pin_y, pin_sw)
@@ -124,6 +133,15 @@ class Control:
         self.y.action = int(y_action)
         self.y.speed = int(y_speed)
 
+    def get_car_data(self):
+        if self.x.speed > self.y.speed:
+            self._car_data.action = self.x.action_to_str()
+            self._car_data.speed = self.x.speed
+        else:
+            self._car_data.action = self.x.action_to_str()
+            self._car_data.speed = self.x.speed
+
+        return self._car_data
 
     def __str__(self):
         return ",".join(
