@@ -24,11 +24,10 @@ while True:
     while True:
         ctrl.read_joy()
 
-        print("Seding on server " + str(ctrl))
+        # print("Seding on server " + str(ctrl))
         response = net.send_command(connection, str(ctrl))
         if not response:
             print('No response or socket error')
             break
 
         print(response)
-        counter += 1

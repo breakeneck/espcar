@@ -1,7 +1,7 @@
 import machine
 import time
 
-MAX_SPEED = 500
+DEFAULT_SPEED = 500
 
 """
 PIN   1, 2, 3, 4, L,  R
@@ -9,6 +9,7 @@ GPIO  5, 4, 0, 2, 12, 14
 8266 D1,D2,D3,D4, D6, D5
 32  
 """
+
 
 # order of pins on L298N
 #
@@ -22,7 +23,6 @@ GPIO  5, 4, 0, 2, 12, 14
 # GND violet
 
 class Car:
-
     last_action_str = ...
 
     def __init__(self, pin_input1, pin_input2, pin_input3, pin_input4, pin_enable_a, pin_enable_b):
@@ -40,7 +40,7 @@ class Car:
         self.pwm_right = machine.PWM(self.p_right)
         self.pwm_right.freq(500)
 
-    def setPins(self, value1, value2, value3, value4, speed=MAX_SPEED):
+    def setPins(self, value1, value2, value3, value4, speed=DEFAULT_SPEED):
         self.p1.value(value1)
         self.p2.value(value2)
         self.p3.value(value3)
@@ -58,39 +58,42 @@ class Car:
     0	1	1	0	Right
     """
 
-    def forward(self, speed=MAX_SPEED):
+    def forward(self, speed=DEFAULT_SPEED):
         self.setPins(1, 0, 1, 0, speed)
 
-    def backward(self, speed=MAX_SPEED):
+    def backward(self, speed=DEFAULT_SPEED):
         self.setPins(0, 1, 0, 1, speed)
 
-    def left(self, speed=MAX_SPEED):
+    def left(self, speed=DEFAULT_SPEED):
         self.setPins(1, 0, 0, 1, speed)
 
-    def right(self, speed=MAX_SPEED):
+    def right(self, speed=DEFAULT_SPEED):
         self.setPins(0, 1, 1, 0, speed)
 
     def stop(self, speed=0):
         self.setPins(0, 0, 0, 0, 0)
 
-    def run_str_action(self, str_action, speed=MAX_SPEED):
+    def run_str_action(self, str_action, speed=DEFAULT_SPEED):
         def action_not_found():
             print('No Function ' + action + ' Found!')
 
         action = getattr(self, str_action, action_not_found)
         action(speed)
-        # self.last_action_str = str_action + ' ' + str(round(speed/100)) + 'km/h'
 
+        self.last_action_str = str_action + ' ' + str(round(speed / 100)) + 'km/h'
+        print(self.last_action_str)
 
-    def run(self, control):
-        car_data = control.get_car_data()
-        self.run_str_action(car_data.action, car_data.speed)
-        print(car_data)
+    def run(self, engine_params):
+        self.run_str_action(engine_params.action, engine_params.speed)
+        # print(engine_params)
 
+    """
+    Accepts dict of timed actions, for example:
+         
+    """
 
     def route(self, timed_actions):
         for action_str, seconds in timed_actions.items():
-            print(action_str + ' - ' + str(seconds) + 'sec')
+            # print(action_str + ' - ' + str(seconds) + 'sec')
             self.run_str_action(action_str)
             time.sleep(seconds)
-

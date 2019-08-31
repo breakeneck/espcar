@@ -65,7 +65,7 @@ class Axis:
 
     ZERO_BOTTOM = 400
     ZERO_TOP = 500
-    ESP_MAX_VALUE = 1024
+    ESP_MAX_VALUE = 1022
 
     ACTION_NONE = 0
     ACTION_FIRST = 1
@@ -97,7 +97,7 @@ class Axis:
         return self.action_to_str() + ' ' + str(int(self.speed)) + 'km/h'
 
 
-class CarData:
+class EngineParams:
     action = ...
     speed = ...
 
@@ -111,7 +111,7 @@ class Control:
     is_click = False
 
     _joy = ...
-    _car_data = CarData()
+    _engine_params = EngineParams()
 
     def setup_joy(self, pin_x, pin_y, pin_sw):
         self._joy = Joy(pin_x, pin_y, pin_sw)
@@ -123,7 +123,7 @@ class Control:
         self.y.read_raw(self._joy.raw_y)
         self.is_click = self._joy.is_click
 
-        time.sleep(0.1)
+        time.sleep(0.05)
 
     def load_str(self, byte_str):
         x_action, x_speed, y_action, y_speed = str(byte_str).split(",")
@@ -133,15 +133,17 @@ class Control:
         self.y.action = int(y_action)
         self.y.speed = int(y_speed)
 
-    def get_car_data(self):
-        if self.x.speed > self.y.speed:
-            self._car_data.action = self.x.action_to_str()
-            self._car_data.speed = self.x.speed
-        else:
-            self._car_data.action = self.x.action_to_str()
-            self._car_data.speed = self.x.speed
+        return self._get_engine_params()
 
-        return self._car_data
+    def _get_engine_params(self):
+        if self.x.speed > self.y.speed:
+            self._engine_params.action = self.x.action_to_str()
+            self._engine_params.speed = self.x.speed
+        else:
+            self._engine_params.action = self.y.action_to_str()
+            self._engine_params.speed = self.y.speed
+
+        return self._engine_params
 
     def __str__(self):
         return ",".join(

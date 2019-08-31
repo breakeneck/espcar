@@ -3,7 +3,7 @@
 import net
 from control import Control
 
-wlan = net.connect_wifi(net.host, net.gateway) # static IP
+wlan = net.connect_wifi(net.host, net.gateway)  # static IP
 print('connected')
 listenSocket = net.listen()
 print('Listening socket')
@@ -50,16 +50,15 @@ while True:
         print(response)
         counter += 1
 
-
 # JOY
 from machine import Pin, ADC
 from time import sleep
 from control import Control
 
 # ESP32 pinouts
-PIN_X = 35 # blue
-PIN_Y = 34 # violet
-PIN_SW = 22 # green
+PIN_X = 35  # blue
+PIN_Y = 34  # violet
+PIN_SW = 22  # green
 
 dx = ADC(Pin(PIN_X))
 dx.atten(ADC.ATTN_11DB)
@@ -73,6 +72,7 @@ sw = Pin(PIN_SW, Pin.IN, Pin.PULL_UP)
 
 control = Control()
 
+
 def read():
     value_x = dx.read()
     value_y = dy.read()
@@ -82,16 +82,11 @@ def read():
     print(control.output())
 
 
-
-
-
 # SERVER TESTING
 
 
-
-
-    # command = net.receive_command(listenSocket)
-    # print(command)
+# command = net.receive_command(listenSocket)
+# print(command)
 
 
 """
@@ -153,7 +148,6 @@ def accept_conections():
 
 """
 
-
 # while True:
 #     client, addr = listenSocket.accept()
 #     if addr:
@@ -168,12 +162,11 @@ def accept_conections():
 #         except  Exception as e:
 #             print(type(e).__name__)
 
-    # wlan.disconnect()
-    # wlan.active(False)
+# wlan.disconnect()
+# wlan.active(False)
 
 
-
-            # if (len(data) == 0):
-            #     # client.close()
-            #     print('Received 0 bytes')
-            #     continue
+# if (len(data) == 0):
+#     # client.close()
+#     print('Received 0 bytes')
+#     continue
