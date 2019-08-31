@@ -36,7 +36,7 @@ class Joy:
 
     def _read_click(self):
         first = self.sw.value()
-        time.sleep(0.01)
+        time.sleep(0.05)
         second = self.sw.value()
 
         if first and not second:
@@ -92,14 +92,15 @@ class Axis:
             return ('stop', 'backward', 'forward')[self.action]
 
     def __str__(self):
-        return self.action_to_str() + ' ' + str(self.speed) + 'km/h'
+        return self.action_to_str() + ' ' + str(int(self.speed)) + 'km/h'
 
 
 class Control:
     x = Axis(Axis.TYPE_ABSCISSA)
     y = Axis(Axis.TYPE_ORDINATE)
+    is_click = False
 
-    _joy: Joy = ...
+    _joy = ...
 
     def setup_joy(self, pin_x, pin_y, pin_sw):
         self._joy = Joy(pin_x, pin_y, pin_sw)
@@ -109,6 +110,9 @@ class Control:
 
         self.x.read_raw(self._joy.raw_x)
         self.y.read_raw(self._joy.raw_y)
+        self.is_click = self._joy.is_click
+
+        time.sleep(0.1)
 
     def load(self, byte_str):
         self.x.action, self.x.speed, self.y.action, self.y.speed = str(byte_str).split(",")
