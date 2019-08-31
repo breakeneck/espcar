@@ -51,7 +51,7 @@ class Joy:
     def read(self):
         self.raw_x = self.adc_x.read()
         self.raw_y = self.adc_y.read()
-        self.is_click = self._read_click()
+        # self.is_click = self._read_click()
 
 
 class Axis:
@@ -129,7 +129,7 @@ class Control:
         self.y.read_raw(self._joy.raw_y, self.Y_MAX_SPEED)
         self.is_click = self._joy.is_click
 
-        time.sleep(0.05)
+        # time.sleep(0.05)
 
     def load_str(self, byte_str):
         x_action, x_speed, y_action, y_speed = str(byte_str).split(",")

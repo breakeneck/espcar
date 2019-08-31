@@ -22,13 +22,15 @@ ctrl = Control()
 car = Car(PIN_INPUT1, PIN_INPUT2, PIN_INPUT3, PIN_INPUT4, PIN_ENABLE_A, PIN_ENABLE_B)
 
 # car.route({'forward': 1, 'backward': 1, 'left': 1, 'right': 1})
-# car.route({'stop': 1})
 
 
 while True:
     print('Accepting connections...')
     connection, addr = listenSocket.accept()
+
     print('Client connected', addr)
+    car.route({'backward': 0.1, 'stop': 1})
+    car.route({'backward': 0.1, 'stop': 1})
 
     while True:
         response = net.receive_command(connection)
