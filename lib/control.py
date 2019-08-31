@@ -85,11 +85,13 @@ class Axis:
             self.action = self.ACTION_NONE
             self.speed = 0
 
+        self.speed = int(self.speed)
+
     def action_to_str(self):
         if self.type == self.TYPE_ABSCISSA:
-            return ('stop', 'left', 'right')[self.action]
+            return ['stop', 'left', 'right'][int(self.action)]
         else:
-            return ('stop', 'backward', 'forward')[self.action]
+            return ['stop', 'backward', 'forward'][int(self.action)]
 
     def __str__(self):
         return self.action_to_str() + ' ' + str(int(self.speed)) + 'km/h'
@@ -114,8 +116,14 @@ class Control:
 
         time.sleep(0.1)
 
-    def load(self, byte_str):
-        self.x.action, self.x.speed, self.y.action, self.y.speed = str(byte_str).split(",")
+    def load_str(self, byte_str):
+        x_action, x_speed, y_action, y_speed = str(byte_str).split(",")
+
+        self.x.action = int(x_action)
+        self.x.speed = int(x_speed)
+        self.y.action = int(y_action)
+        self.y.speed = int(y_speed)
+
 
     def __str__(self):
         return ",".join(

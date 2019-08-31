@@ -132,7 +132,7 @@ def send_command_per_socket(request):
 def receive_command(connection):
     try:
         # connection,addr = listenSocket.accept()
-        data = connection.recv(BYTES)                #Receive 1024 byte of data from the socket
+        data = connection.recv(BYTES).decode('utf-8')                #Receive 1024 byte of data from the socket
         # print('received ' + data + ' from ' + addr)
         connection.send('OK')                 #send data
 

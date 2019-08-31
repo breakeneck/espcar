@@ -1,5 +1,21 @@
-#for f in *.py; do amp put $f; done
-#esp-connect
+#!/bin/bash
 
-amp2 put test_client.py main.py && amp2 put control.py && esp-connect2
-#&& amp2 put net.py && esp-connect2
+if [[ "$1" == "server" ]]; then
+    PORT=/dev/ttyUSB0
+else
+    PORT=/dev/ttyUSB1
+fi
+
+UPLOAD_CMD="sudo ampy --port $PORT put"
+
+echo "For $1 used port $PORT"
+
+cd $1
+echo Uploading $(ls)
+for f in *.py; do $UPLOAD_CMD $f; done
+cd ../lib
+echo Uploading $(ls)
+for f in *.py; do $UPLOAD_CMD $f; done
+cd ..
+
+sudo picocom $PORT -b115200

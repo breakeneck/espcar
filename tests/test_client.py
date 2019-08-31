@@ -1,9 +1,9 @@
 from control import Control
 
 # ESP32 pinouts
-PIN_X = 35 # blue
-PIN_Y = 34 # violet
-PIN_SW = 32 # green
+PIN_X = 35  # blue
+PIN_Y = 34  # violet
+PIN_SW = 32  # green
 
 ctrl = Control()
 ctrl.setup_joy(PIN_X, PIN_Y, PIN_SW)
